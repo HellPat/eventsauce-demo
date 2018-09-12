@@ -17,7 +17,11 @@ final class Order implements AggregateRoot
     public function addItem(int $quantity, OrderItem $item)
     {
         if ($quantity < 1) {
-            throw new \RuntimeException('Quantity must be >= 1');
+            throw new QuantityNotValid('Quantity must be >= 1');
+        }
+        
+        if ($quantity > $item->getMaxQuantity()) {
+            throw new QuantityNotValid(sprintf('Quantity must not be > %s', $item->getMaxQuantity()));
         }
         
         $this->recordThat(new ItemAdded(

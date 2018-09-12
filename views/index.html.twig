@@ -1,0 +1,29 @@
+{% extends "_layout.html.twig" %}
+
+{% block content %}
+    
+    {% for product in products %}
+        <article class="border border-grey-light my-2 p-4 flex ">
+            <figure class="mr-4">
+                <img class="block" src="{{ product.image }}" alt="">
+            </figure>
+            <div class="flex-auto">
+                <h1 class="text-grey-darker font-normal text-xxl mb-4">{{ product.name }}</h1>
+
+                <form action="/add_item.php" method="post">
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                    <div>
+                        <label for="quantity_{{ product.id }}">
+                            Quantity
+                        </label>
+                        <input id="quantity_{{ product.id }}" type="number" name="quantity" value="1" class="border border-gray shadow-inner p-2">
+                    </div>
+                    <div>
+                        <button class="bg-blue-light border border-blue rounded text-white py-2 px-4 mt-8">Add to cart</button>
+                    </div>
+                </form>
+            </div>
+        </article>
+    {% endfor %}
+    
+{% endblock %}

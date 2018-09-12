@@ -11,4 +11,6 @@ interface OrderItem
     public function getName(): string;
 
     public function getUnitPrice(): int;
+    
+    public function getMaxQuantity(): int;
 }
