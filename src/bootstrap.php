@@ -9,8 +9,9 @@ use EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer;
 use Psren\EventsauceDemo\Domain\Order\Order;
 
 require_once __DIR__.'/../vendor/autoload.php';
+$config = require __DIR__.'/../config.php';
 
-$connection = DriverManager::getConnection(['url' => 'mysql://root@localhost/eventsauce_demo']);
+$connection = DriverManager::getConnection($config['db']);
 
 $orderRepository = new ConstructingAggregateRootRepository(
     Order::class,

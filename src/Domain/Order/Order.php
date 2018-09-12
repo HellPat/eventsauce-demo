@@ -14,15 +14,17 @@ final class Order implements AggregateRoot
     
     private $items = [];
     
-    public function addItem(AddItem $command)
+    public function addItem(int $quantity, OrderItem $item)
     {
-        // Guard the event with businessrules here
+        if ($quantity < 1) {
+            throw new \RuntimeException('Quantity must be >= 1');
+        }
         
         $this->recordThat(new ItemAdded(
-            $command->getItem()->getId(),
-            $command->getItem()->getName(),
-            $command->getQuantity(),
-            $command->getQuantity() * $command->getItem()->getUnitPrice()
+            $item->getId(),
+            $item->getName(),
+            $quantity,
+            $quantity * $item->getUnitPrice()
         ));
     }
     
