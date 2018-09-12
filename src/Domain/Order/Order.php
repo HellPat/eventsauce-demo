@@ -32,6 +32,11 @@ final class Order implements AggregateRoot
         ));
     }
     
+    public function clear()
+    {
+        $this->recordThat(new OrderCleared());
+    }
+    
     private function applyItemAdded(ItemAdded $event)
     {
         $this->items[$event->getId()] = [
@@ -41,6 +46,11 @@ final class Order implements AggregateRoot
         ];
     }
 
+    private function applyOrderCleared(OrderCleared $event)
+    {
+        $this->items = [];
+    }
+    
     /**
      * @return array
      */

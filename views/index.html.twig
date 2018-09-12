@@ -12,16 +12,22 @@
 
                 <form action="/add_item.php" method="post">
                     <input type="hidden" name="product" value="{{ product.id }}">
+                    <label for="quantity_{{ product.id }}">
+                        Quantity
+                    </label>
                     <div>
-                        <label for="quantity_{{ product.id }}">
-                            Quantity
-                        </label>
                         <input id="quantity_{{ product.id }}" type="number" name="quantity" value="1" class="border border-gray shadow-inner p-2">
-                    </div>
-                    <div>
-                        <button class="bg-blue-light border border-blue rounded text-white py-2 px-4 mt-8">Add to cart</button>
+                        <button class="bg-red-light border border-red rounded text-white py-2 px-4 hover:underline">Add to cart</button>
                     </div>
                 </form>
+                
+                {% if product.infos %}
+                    <ul class="text-sm text-red py-2 ml-0 list-reset">
+                        {% for info in product.infos %}
+                            <li>- {{ info }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
         </article>
     {% endfor %}

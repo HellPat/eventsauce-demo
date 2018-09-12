@@ -12,13 +12,13 @@ $config = require __DIR__.'/../config.php';
 
 $connection = DriverManager::getConnection($config['db']);
 
-$orderRepository = new ConstructingAggregateRootRepository(
-    Order::class,
-    new DoctrineMessageRepository(
-        $connection,
-        new ConstructingMessageSerializer(),
-        '_order_messages'
-    )
+$orderMessageRepository = new DoctrineMessageRepository(
+    $connection,
+    new ConstructingMessageSerializer(),
+    '_order_messages'
 );
 
-return $orderRepository;
+$orderRepository = new ConstructingAggregateRootRepository(
+    Order::class,
+    $orderMessageRepository
+);

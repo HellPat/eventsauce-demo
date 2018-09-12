@@ -8,44 +8,94 @@
     <title>Eventsauce.io Demo</title>
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
-<body>
-
-    <header class="bg-grey-light">
-        <nav class="mx-auto max-w-lg p-4">
+<body class="bg-grey-light">
+    <header class="w-full p-4">
+        <div class="text-right">
+            <button>
+                <span class="bg-green-light border border-green shadow-md rounded relative flex flex-wrap text-white text-left items-center mb-2">
+                    <span class="absolute pin-t pin-l -mt-3 -ml-6 text-white bg-red-light border border-red-dark rounded-lg flex items-center justify-center px-3 py-1 shadow-lg">{{ order.items|length }}</span>
+                    <span class="block p-3 px-6">
+                        <span class="block text-lg">1000€</span>
+                    </span>
+                    <span class="block p-3 px-6 border-l border-green">
+                        <i class="fa fa-shopping-cart"></i>
+                    </span>
+                </span>
+                <span class="block text-xs text-red">you save 100€</span>
+            </button>
+        </div>
+        
+        <div class="my-4 p-4 bg-grey-darkest rounded flex justify-between">
             <a class="no-underline" href="#">
                 <img class="inline-block align-middle" width="30" height="30" src="https://eventsauce.io/static/logo.svg">
-                <span class="text-lg">EventSauce.io unofficial Demo</span>
+                <span class="text-lg text-white align-middle">EventSauce.io unofficial Demo</span>
             </a>
-        </nav>
+            <nav>
+                <a href="/clear_order.php" class="bg-blue-light border border-blue rounded text-white py-2 px-4 inline-block no-underline hover:underline">
+                    Clear Cart
+                </a>
+            </nav>
+        </div>
     </header>
-    <section class="mx-auto max-w-lg flex">
-        <main class="p-4">
+    
+    <section class="flex flex-wrap flex-grow content-start">
+        <main class="p-4 flex-grow bg-white">
             {% if errorMessages is defined %}
                 {% for error in errorMessages %}
-                    <div class="rounded bg-red-lightest border border-red p-4 mb-1">
+                    <div class="rounded bg-red-lightest text-red-dark border border-red p-4 mb-1">
                         {{ error }}
                     </div>
                 {% endfor %}
             {% endif %}
-    
+
             {% if successMessages is defined %}
                 {% for success in successMessages %}
-                    <div class="rounded bg-green-lightest border border-green p-4 mb-1">
+                    <div class="bg-green-lightest text-green-dark border border-green p-4 mb-1">
                         {{ success }}
                     </div>
                 {% endfor %}
             {% endif %}
-            
+
             {% block content %}
             {% endblock %}
         </main>
-        <aside class="p-4">
-            <h1>Cart</h1>
-            
-            {{ order.items|length }}
+        <aside class="p-4 w-1/4 bg-white">
+            Maybe Adress etc? Gutscheine?
+        </aside>
+
+        <aside class="p-4 w-1/4">
+            <h1 class="ont-normal text-xxl mb-4">History</h1>
+
+            <div>
+                Version: {{ order.aggregateRootVersion }}
+            </div>
+
+            <div>
+                {% for message in orderHistory %}
+                    <table>
+                        <tr>
+                            <table class="text-xs">
+                                <tr>
+                                    <th>Type</th>
+                                    <td>{{ message.header('__event_type') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Time</th>
+                                    <td>{{ message.header('__time_of_recording') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Version</th>
+                                    <td>{{ message.header('__aggregate_root_version') }}</td>
+                                </tr>
+                            </table>
+                        </tr>
+                    </table>
+                {% endfor %}
+            </div>
         </aside>
     </section>
-    
+        
 </body>
 </html>

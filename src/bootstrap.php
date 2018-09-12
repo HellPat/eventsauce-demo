@@ -11,22 +11,35 @@ use Symfony\Component\HttpFoundation\Session\Session;
 require_once __DIR__.'/../vendor/autoload.php';
 
 /** @var AggregateRootRepository $orderRepository */
-$orderRepository = require __DIR__.'/order_repository.php';
+require __DIR__.'/order_repository.php';
 
 $request = Request::createFromGlobals();
 
 $session = new Session();
 $session->start();
 
-$orderId = $request->cookies->get('order_id');
-if($orderId) {
-    $order = $orderRepository->retrieve(OrderId::fromString($orderId));
+$storedOrderId = $request->cookies->get('order_id');
+if($storedOrderId) {
+    $order = $orderRepository->retrieve(OrderId::fromString($storedOrderId));
 } else {
     $order = new Order(OrderId::create());
 }
+$orderId = $order->aggregateRootId();
 
 $templating = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__.'/../views'), [
     'strict_variables' => true,
+    'debug' => true,
 ]);
 
+$orderMessages = $orderMessageRepository->retrieveAll($orderId);
+
+$orderHistoryItems = [];
+foreach ($orderMessages as $message) {
+    $orderHistoryItems[] = $message;
+}
+$orderHistory = array_reverse($orderHistoryItems);
+
+$templating->addExtension(new Twig_Extension_Debug());
 $templating->addGlobal('order', $order);
+$templating->addGlobal('orderMessages', $orderMessages);
+$templating->addGlobal('orderHistory', $orderHistory);

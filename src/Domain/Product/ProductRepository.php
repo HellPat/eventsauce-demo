@@ -18,11 +18,23 @@ final class ProductRepository
 
     public function __construct()
     {
-        $this->products = [
-            new DummyProduct(1, 'Photo 1', 400, 'https://placekitten.com/300/200?a=1'),
-            new DummyProduct(2, 'Photo 2', 400, 'https://placekitten.com/300/200?a=2'),
-            new DummyProduct(3, 'Photo 3', 400, 'https://placekitten.com/300/200?a=3'),
-        ];
+        $this->products = [];
+
+        $p1 = new DummyProduct(1, 'Photo 1', 400, 'https://placeimg.com/300/200/any?a=1');
+        
+        $p2 = new DummyProduct(2, 'Photo 2', 400, 'https://placeimg.com/300/200/any?a=2');
+        $p2->setMaxQuantiy(3);
+        $p2->addInfo('Maximum of "3" per Order');
+        
+        $p3 = new DummyProduct(3, 'Photo 3', 400, 'https://placeimg.com/300/200/any?a=3');
+        $p4 = new DummyProduct(4, 'Photo 4', 400, 'https://placeimg.com/300/200/any?a=4');
+        $p5 = new DummyProduct(5, 'Photo 5', 400, 'https://placeimg.com/300/200/any?a=5');
+        
+        $this->products[] = $p1;
+        $this->products[] = $p2;
+        $this->products[] = $p3;
+        $this->products[] = $p4;
+        $this->products[] = $p5;
     }
 
     /**

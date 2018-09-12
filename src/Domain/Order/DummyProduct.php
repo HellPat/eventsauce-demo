@@ -27,18 +27,23 @@ final class DummyProduct implements OrderItem
      * @var string
      */
     private $image;
+    
     /**
      * @var int
      */
-    private $max;
+    private $maxQuantity = 9999;
 
-    public function __construct(int $id, string $name, int $unitPrice, string $image, int $max = 900)
+    /**
+     * @var array 
+     */
+    private $infos = [];
+
+    public function __construct(int $id, string $name, int $unitPrice, string $image)
     {
         $this->id = $id;
         $this->name = $name;
         $this->unitPrice = $unitPrice;
         $this->image = $image;
-        $this->max = $max;
     }
 
     public function getId(): int
@@ -60,10 +65,25 @@ final class DummyProduct implements OrderItem
     {
         return $this->image;
     }
-
+    
     public function getMaxQuantity(): int
     {
-        return $this->max;
+        return $this->maxQuantity;
     }
 
+    public function setMaxQuantiy(int $maxQuantity): void
+    {
+        $this->maxQuantity = $maxQuantity;
+    }
+
+    public function getInfos(): array
+    {
+        return $this->infos;
+    }
+
+    public function addInfo(string $infos): void
+    {
+        $this->infos[] = $infos;
+    }
+    
 }
