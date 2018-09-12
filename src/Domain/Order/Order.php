@@ -34,7 +34,7 @@ final class Order implements AggregateRoot
     
     private function applyItemAdded(ItemAdded $event)
     {
-        $this->items[] = [
+        $this->items[$event->getId()] = [
             'id' => $event->getId(),
             'quantity' => $event->getQuantity(),
             'total' => $event->getTotal(),

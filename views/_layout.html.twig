@@ -19,16 +19,33 @@
             </a>
         </nav>
     </header>
-    <main class="mx-auto max-w-lg p-4">
-        {% for error in errors if errors is defined %}
-            <div class="rounded bg-red-lightest border border-red p-4 mb-1">
-                {{ error }}
-            </div>
-        {% endfor %}
-        
-        {% block content %}
-        {% endblock %}
-    </main>
+    <section class="mx-auto max-w-lg flex">
+        <main class="p-4">
+            {% if errorMessages is defined %}
+                {% for error in errorMessages %}
+                    <div class="rounded bg-red-lightest border border-red p-4 mb-1">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+    
+            {% if successMessages is defined %}
+                {% for success in successMessages %}
+                    <div class="rounded bg-green-lightest border border-green p-4 mb-1">
+                        {{ success }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% block content %}
+            {% endblock %}
+        </main>
+        <aside class="p-4">
+            <h1>Cart</h1>
+            
+            {{ order.items|length }}
+        </aside>
+    </section>
     
 </body>
 </html>
